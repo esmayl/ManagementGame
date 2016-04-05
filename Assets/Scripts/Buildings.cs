@@ -12,52 +12,35 @@ public class Buildings : MonoBehaviour
 
     void Update()
     {
-        for (int i = 0; i < completeList[BuildingType.House].Length; i++)
+
+        if (completeList.ContainsKey(BuildingType.House))
         {
-            if (completeList[BuildingType.House][i] != null && completeList[BuildingType.House][i].Id != -1)
+            for (int i = 0; i < completeList[BuildingType.House].Length; i++)
             {
-                if (completeList[BuildingType.House][i].level < completeList[BuildingType.House][i].maxLevel)
+                if (completeList[BuildingType.House][i] != null && completeList[BuildingType.House][i].Id != -1)
                 {
-                    StartCoroutine("AddLevel", completeList[BuildingType.House][i]);
+                    Debug.Log(completeList[BuildingType.House][i].level);
+
+                    //give people
                 }
             }
         }
-        
-        for (int i =0;i< completeList[BuildingType.Shopping].Length;i++)
+        if (completeList.ContainsKey(BuildingType.Shopping))
         {
-            if (completeList[BuildingType.Shopping][i] != null && completeList[BuildingType.Shopping][i].Id != -1)
+            for (int i = 0; i < completeList[BuildingType.Shopping].Length; i++)
             {
-                if (completeList[BuildingType.Shopping][i].level < completeList[BuildingType.Shopping][i].maxLevel)
+                if (completeList[BuildingType.Shopping][i] != null && completeList[BuildingType.Shopping][i].Id != -1)
                 {
-                    StartCoroutine("AddLevel", completeList[BuildingType.Shopping][i]);
+                    Debug.Log(completeList[BuildingType.Shopping][i].level);
+                    //give money
                 }
             }
         }
 
-        
 
     }
 
-    public IEnumerator AddLevel(BuildingData buildingToLevel)
-    {
-        if (leveling) { yield break;}
-
-        Debug.Log("Leveling to "+(buildingToLevel.level+1));
-        leveling = true;
-
-        yield return new WaitForSeconds(buildingToLevel.tickCount);
-
-        if (buildingToLevel.LevelUp())
-        {
-            Debug.Log("Level up complete");
-            leveling = false;
-            yield break;
-        }
-
-        leveling = false;
-        yield break;
-        
-    }
+    
 
     public static void AddBuilding(BuildingData buildingInfo,BuildingType type)
     {
@@ -96,12 +79,11 @@ public class Buildings : MonoBehaviour
 
     static BuildingData CreateBuilding(BuildingData buildingInfo,BuildingType type)
     {
-        BuildingData tempBuilding = new BuildingData(buildingInfo.position,buildingInfo.rotation,buildingInfo.worth,buildingInfo.maxLevel,buildingInfo.tickCount);
-        tempBuilding.Id = CountArray(type)+1;
+        buildingInfo.Id = CountArray(type)+1;
 
-        Debug.Log("Created building "+tempBuilding.Id+" at position: "+ tempBuilding.position);
+        Debug.Log("Created building "+ buildingInfo.Id+" at position: "+ buildingInfo.position);
 
-        return tempBuilding;
+        return buildingInfo;
     }
 
     static bool CheckArray(BuildingType typeToCheck)
